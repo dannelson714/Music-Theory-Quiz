@@ -1,0 +1,244 @@
+/* Universal Selector */
+* {
+    margin:0;
+    padding:0; 
+  }
+
+/* Element Selectors */
+
+body {
+    position: relative;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 16px;
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1%;
+    background-color: cornflowerblue;
+    color:aliceblue
+}
+
+h1, h2 {
+    margin: 20px;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+nav ul {
+    display: flex;
+    justify-content: space-between;
+    min-width: 400px;
+}
+
+nav a {
+    font-weight: bold;
+    text-decoration: none;
+    list-style: none;
+}
+
+nav li {
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    margin: 10px;
+}
+
+header h1 {
+    font-size: 200%;
+}
+
+h2 {
+    font-size: 150%;
+    text-align: right;
+    position: absolute;
+    top: -5px;
+    right: 0%;
+    
+}
+
+header nav {
+    display: flex;
+    justify-content: space-between;
+    margin-right: 25px;
+}
+
+/*For the sidebar for each main page article*/
+article {
+    display:flex;
+    flex-wrap: wrap;
+    margin-bottom: 25px;
+    margin-left: 0px;
+}
+
+aside {
+    position: relative;
+    flex: 30%;
+    padding: 20px;
+    border-right: 1px solid cornflowerblue;
+}
+
+section {
+    flex: 70%;
+    padding: 20px;
+}
+
+/*This container is for the hero bar subheader*/
+.container {
+    position: relative;
+    text-align: center;
+    color: white;
+}
+
+#hero {
+    image-rendering: auto;
+    height: 300px;
+    width: 100%;
+    margin-bottom: 25px;
+    background-image: url("./images/IMG_2056.jpeg");
+    background-size: cover;
+    background-position: center;
+}
+
+/*To position the text laid over the hero image */
+.bottom-left{
+    position: absolute;
+    font-size: 200%;
+    background-color: cornflowerblue;
+    bottom: 16px;
+    left: 1%;
+}
+
+/*To style the project gallery section*/
+.gallery{
+    display:block;
+    flex-wrap: wrap;
+    margin-top:0px;
+    padding-top: 0px;
+}
+
+.container-gallery {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    text-align: center;
+    justify-content: space-between;
+    color: white;
+}
+
+/*Styling the in-line picture for the About Me section*/
+#about-pic {
+    position: relative;
+    display:flex;
+    image-rendering:optimizeQuality;
+    width: 140px;
+    height: 190px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    object-fit:cover;
+    float: left;
+    border: 1px solid cornflowerblue;
+}
+
+/*For the primary project image in the project gallery*/
+#primary {
+    position: relative;
+    display:flex;
+    image-rendering: auto;
+    margin: 10px 0;
+    width: 100%;
+    height: 300px;
+}
+
+/*For the secondary project images in the project gallery*/
+.secondary {
+    position: relative;
+    display:flex;
+    image-rendering:optimizeQuality;
+    width: 400px;
+    height: 100px;
+    margin: 10px 0;
+    object-fit:cover;
+    float: left;
+}
+
+/*For hovering effects on gallery images*/
+.hover:hover {
+    box-shadow: 0 0 10px grey;
+}
+
+.hover:focus {
+    border-right-width: 10px;
+}
+
+/*Gallery subheading styles*/
+.bottom-gallery{
+    position: absolute;
+    font-size: 200%;
+    background-color: cornflowerblue;
+    bottom: -30px;
+    left: -20px;
+}
+
+.bottom-secondary{
+    position: absolute;
+    font-size: 200%;
+    background-color: cornflowerblue;
+    bottom: -30px;
+    left: -20px;
+}
+
+.special-color{
+    color: cornflowerblue;
+}
+
+.contact-section{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    color:black;
+}
+
+.contact-style{
+    padding: 10px;
+    border: 1px solid cornflowerblue;
+    border-top: 1px;
+    border-right: 1px;
+    border-left: 1px;
+    text-decoration: none;
+}
+
+div p{
+    color: black;
+}
+
+/*Adjusting for various screens and devices*/
+@media screen and (max-width: 1200px) {
+    .secondary {
+        width: 200%;
+    }
+}
+@media screen and (max-width: 768px) {
+    header, article, figure, section {
+      flex-direction: column;
+    }
+    .secondary {
+        width: 100%
+    }
+    h2 {
+        text-align: left;
+        left: 0%;
+    }
+    .contact-section{
+        flex-direction: column;
+    }
+}
