@@ -21,7 +21,7 @@ var question_3 = {
 }
 
 var question_4 = {
-    question: "In the key of Db major which of the following correctly spells a iv6 chord?",
+    question: "If you are in the key of Ab major and have modulated to the subdominant, which of the following correctly spells a iv6 chord in the modulated key area?",
     answers: ["Gb-Bb-Db", "F-Ab-Cb", "A-C#-F#", "Bbb-Db-Gb"],
     correct: "Bbb-Db-Gb"
 
@@ -37,6 +37,8 @@ var question_5 = {
 //Array of question objects to pull from in main function
 question_list = [question_1, question_2, question_3, question_4, question_5];
 
+var timeEnd = false;
+
 //Variable for timing
 var secondsLeft = 75;
 var timeEl = document.querySelector(".time")
@@ -46,19 +48,76 @@ function setTime() {
     var timerInterval = setInterval(function() {
         secondsLeft--;
         timeEl.textContent = "Time remaining: " + secondsLeft;
-
-        if(secondsLeft <= 0) {
+        if(timeEnd){
+            quizEnd(secondsLeft)
             clearInterval(timerInterval);
-            finalScore();
+        }
+        if(secondsLeft <= 0) {
+            secondsLeft = 0;
+            timeEl.textContent = "Time remaining: " + secondsLeft;
+            clearInterval(timerInterval);
+            quizEnd(secondsLeft);
         }
     }, 1000);
 }
 
-function finalScore() {
-    //To be filled in later
-    return
+//Quiz ends and user receives score, is prompted to enter initials
+function quizEnd(finishTime){
+    var body = document.body;
+    var newSec = document.createElement("section");
+    var allDone = document.createElement("h2");
+    var endResult = document.createElement("h2");
+    var responseForm = document.createElement("form");
+    var responseDiv = document.createElement("div");
+    var responseLabel = document.createElement("label");
+    var responseInput = document.createElement("input");
+    // var submitButton = document.createElement("button");
+    var submitButton = document.createElement("form")
+    // var submitLink = document.createElement("a");
+    var submitInput = document.createElement("input")
+
+    allDone.textContent = "All done!"
+    endResult.textContent = "Your final score is: " + finishTime;
+    responseLabel.textContent = "Enter initials: ";
+    // submitButton.textContent = "Submit"
+
+    body.appendChild(newSec);
+    newSec.appendChild(allDone);
+    newSec.appendChild(endResult);
+    newSec.appendChild(responseForm);
+    responseForm.appendChild(responseDiv);
+    responseDiv.appendChild(responseLabel);
+    responseDiv.appendChild(responseInput);
+    responseForm.appendChild(submitButton);
+    submitButton.appendChild(submitInput);
+
+    submitButton.setAttribute("action", "./highScore.html");
+    submitButton.setAttribute("style", "margin-left: 95px;");
+    submitInput.setAttribute("type", "submit");
+    submitInput.setAttribute("value", "Submit");
+
+    submitButton.addEventListener("click", function(event) {
+        var user = {
+            user_name: responseInput.value.trim(),
+            score: finishTime
+        };
+        if (localStorage.getItem("hsList") === null){
+            var hsList = [];
+            hsList.push(user);
+            localStorage.setItem("hsList", JSON.stringify(hsList));
+        }
+        else {
+            var hsList = JSON.parse(localStorage.getItem("hsList"));
+            console.log(hsList);
+            hsList.push(user);
+            console.log(hsList);
+            localStorage.setItem("hsList", JSON.stringify(hsList))
+        }
+    })
 }
 
+
+//Causes the 'Correct' or 'Wrong' text to disappear
 function setResultTime(ansSec) {
     var resultDisplaySec = 2
     var timerInterval = setInterval(function() {
@@ -71,6 +130,7 @@ function setResultTime(ansSec) {
     
 }
 
+//Checks the user choice for correctness, displays result on screen.
 function questionResult(result, ans) {
     if (result) {
         ans.textContent = "Correct!"
@@ -90,9 +150,17 @@ function correctAnswer(choice,newQuestion,i, ans, newSec){
     else {
         questionResult(false, ans);
         secondsLeft -= 10;
+        if (secondsLeft <= 0){
+            secondsLeft = 0;
+        }
     }
     newSec.textContent="";
-    createNewQuestion(question_list[i],i)
+    if (i==question_list.length){
+        timeEnd = true;
+    }
+    else {
+        createNewQuestion(question_list[i],i)
+    }
 }
 
 //Provides start button functionality and gets the quiz underway
@@ -102,10 +170,12 @@ startButton.addEventListener("click", function() {
     starterClass.remove();
     i=0
     createNewQuestion(question_list[i],i);
-    setTime();
+    var finishTime = setTime();
 });
 
-//MAIN function
+
+
+//Generates each question by pulling from array of question objects
 function createNewQuestion (newQuestion, index) {
     var body = document.body;
     var newSec = document.createElement("section")
@@ -162,3 +232,5 @@ function createNewQuestion (newQuestion, index) {
         newSec.remove();
     })
 };
+
+
