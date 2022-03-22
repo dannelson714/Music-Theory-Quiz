@@ -20,6 +20,10 @@
       margin: 10px;
   }
 
+  header section a {
+      text-decoration: none;
+  }
+
   body section {
       display: flex;
       flex-direction: column;
@@ -41,5 +45,12 @@
 
   #opening {
       width: 450px;
+  }
+
+  .high-score {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
   }
 

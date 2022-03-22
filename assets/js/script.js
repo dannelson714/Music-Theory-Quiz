@@ -34,14 +34,13 @@ var question_5 = {
 
 }
 
-//Array of question objects to pull from in main function
+//Array of question objects to pull from in main function.
 question_list = [question_1, question_2, question_3, question_4, question_5];
-
-var timeEnd = false;
 
 //Variable for timing
 var secondsLeft = 75;
 var timeEl = document.querySelector(".time")
+var timeEnd = false;
 
 //Sets the timer.
 function setTime() {
@@ -61,7 +60,63 @@ function setTime() {
     }, 1000);
 }
 
-//Quiz ends and user receives score, is prompted to enter initials
+//Causes the 'Correct' or 'Wrong' text to disappear.
+function setResultTime(ansSec) {
+    var resultDisplaySec = 1
+    var timerInterval = setInterval(function() {
+        resultDisplaySec--;
+        if(resultDisplaySec === 0) {
+            clearInterval(timerInterval);
+            ansSec.remove();
+        }
+    }, 1000);
+}
+
+//Checks the user choice for correctness, displays result on screen.
+function questionResult(result, ans) {
+    if (result) {
+        ans.textContent = "Correct!"
+    }
+    else {
+        ans.textContent = "Wrong!"
+    }
+    setResultTime(ans);
+}
+
+//Checks answer, shows results to user, loads next question.
+function correctAnswer(choice,newQuestion,i, ans, newSec){
+    i++;
+    if (choice==newQuestion.correct) {
+        questionResult(true, ans);
+    }
+    else {
+        questionResult(false, ans);
+        secondsLeft -= 10;
+        if (secondsLeft <= 0){
+            secondsLeft = 0;
+        }
+    }
+    newSec.textContent="";
+    if (i==question_list.length){
+        //changes variable and stops the clock when last question is answered.
+        timeEnd = true;
+    }
+    else {
+        createNewQuestion(question_list[i],i)
+    }
+}
+
+//Provides start button functionality and gets the quiz underway.
+var startButton = document.querySelector("#start")
+startButton.addEventListener("click", function() {
+    starterClass = document.getElementById("starter");
+    starterClass.remove();
+    i=0
+    createNewQuestion(question_list[i],i);
+    var finishTime = setTime();
+});
+
+//Quiz ends and user receives score, is prompted to enter initials, creates button to submit results to high score list.
 function quizEnd(finishTime){
     var body = document.body;
     var newSec = document.createElement("section");
@@ -71,15 +126,12 @@ function quizEnd(finishTime){
     var responseDiv = document.createElement("div");
     var responseLabel = document.createElement("label");
     var responseInput = document.createElement("input");
-    // var submitButton = document.createElement("button");
     var submitButton = document.createElement("form")
-    // var submitLink = document.createElement("a");
     var submitInput = document.createElement("input")
 
     allDone.textContent = "All done!"
     endResult.textContent = "Your final score is: " + finishTime;
     responseLabel.textContent = "Enter initials: ";
-    // submitButton.textContent = "Submit"
 
     body.appendChild(newSec);
     newSec.appendChild(allDone);
@@ -95,6 +147,7 @@ function quizEnd(finishTime){
     submitButton.setAttribute("style", "margin-left: 95px;");
     submitInput.setAttribute("type", "submit");
     submitInput.setAttribute("value", "Submit");
+    submitInput.setAttribute("style", "padding: 8px; margin-left: -23px; cursor: pointer; font-size: 24px;background-color: #60267a; color: white;")
 
     submitButton.addEventListener("click", function(event) {
         var user = {
@@ -115,65 +168,6 @@ function quizEnd(finishTime){
         }
     })
 }
-
-
-//Causes the 'Correct' or 'Wrong' text to disappear
-function setResultTime(ansSec) {
-    var resultDisplaySec = 2
-    var timerInterval = setInterval(function() {
-        resultDisplaySec--;
-        if(resultDisplaySec === 0) {
-            clearInterval(timerInterval);
-            ansSec.remove();
-        }
-    }, 1000);
-    
-}
-
-//Checks the user choice for correctness, displays result on screen.
-function questionResult(result, ans) {
-    if (result) {
-        ans.textContent = "Correct!"
-    }
-    else {
-        ans.textContent = "Wrong!"
-    }
-    setResultTime(ans);
-}
-
-//Checks answer, shows results to user, loads next question
-function correctAnswer(choice,newQuestion,i, ans, newSec){
-    i++;
-    if (choice==newQuestion.correct) {
-        questionResult(true, ans);
-    }
-    else {
-        questionResult(false, ans);
-        secondsLeft -= 10;
-        if (secondsLeft <= 0){
-            secondsLeft = 0;
-        }
-    }
-    newSec.textContent="";
-    if (i==question_list.length){
-        timeEnd = true;
-    }
-    else {
-        createNewQuestion(question_list[i],i)
-    }
-}
-
-//Provides start button functionality and gets the quiz underway
-var startButton = document.querySelector("#start")
-startButton.addEventListener("click", function() {
-    starterClass = document.getElementById("starter");
-    starterClass.remove();
-    i=0
-    createNewQuestion(question_list[i],i);
-    var finishTime = setTime();
-});
-
-
 
 //Generates each question by pulling from array of question objects
 function createNewQuestion (newQuestion, index) {
